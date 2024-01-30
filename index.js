@@ -1,14 +1,22 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res)=>res.send('Hello World!!'));
-app.get('/about', (req,res) => res.send('This is about page!'));
-app.get('/contact',(req,res) => res.send('This is about page!'));
-app.get('/books/:bookId', (req, res) => {
-    res.send(req.params);
-  });
-// For invalid routes
-app.get('*', (req, res) => {
-    res.send('404! This is an invalid URL.');
-  });
-app.listen(6900, () => console.log('Example app listening at port 6900!'));
+// Simple request time logger
+app.use((req, res, next) => {
+   console.log("A new request received at " + Date.now());
+
+   // This function call tells that more processing is
+   // required for the current request and is in the next middleware
+   //function route handler
+   next();  
+});
+
+app.get('/home', (req, res) => {
+  res.send('Home Page');
+});
+
+app.get('/about', (req, res) => {
+  res.send('About Page');
+});
+
+app.listen(6900, () => console.log('Example app listening on port 6900!'));
